@@ -20,18 +20,14 @@
 
 Перед перемещением добавьте дополнительные зависимости, которые будут использоваться позже.
 
-- [Microsoft. Extensions. Configuration](https://github.com/aspnet/Extensions) для считывания конфигурации приложения из JSON-файла.
+- [Microsoft. Extensions. Configuration. усерсекретс](https://github.com/aspnet/extensions) для чтения конфигурации приложения из [хранилища секретов для разработки .NET](https://docs.microsoft.com/aspnet/core/security/app-secrets).
 - [Библиотека проверки подлинности Microsoft (MSAL) для .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) для проверки подлинности пользователя и получения маркеров доступа.
 - [Клиентская библиотека Microsoft Graph .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) , чтобы совершать вызовы в Microsoft Graph.
-- [Поставщики проверки подлинности для Microsoft Graph .NET SDK](https://github.com/microsoftgraph/msgraph-sdk-dotnet-auth) позволяют клиентской библиотеке Graph автоматически запрашивать маркеры при совершении вызовов API.
 
 Выполните следующие команды в интерфейсе командной строки, чтобы установить зависимости.
 
 ```Shell
-dotnet add package Microsoft.Extensions.Configuration --version 3.1.0
-dotnet add package Microsoft.Extensions.Configuration.FileExtensions --version 3.1.0
-dotnet add package Microsoft.Extensions.Configuration.Json --version 3.1.0
-dotnet add package Microsoft.Extensions.Configuration.Binder --version 3.1.0
+dotnet add package Microsoft.Extensions.Configuration.UserSecrets --version 3.1.0
 dotnet add package Microsoft.Identity.Client --version 4.7.1
 dotnet add package Microsoft.Graph --version 1.21.0
 ```

@@ -2,22 +2,18 @@
 
 В этом упражнении вы будете расширяем приложение из предыдущего упражнения для поддержки проверки подлинности с помощью Azure AD. Это необходимо для получения необходимого маркера доступа OAuth для вызова Microsoft Graph. На этом этапе выполняется интеграция [библиотеки проверки подлинности Microsoft (MSAL) для .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) в приложение.
 
-Создайте новый файл в каталоге **графтуториал** с именем **appSettings. JSON**. Добавьте в этот файл приведенный ниже текст.
+Инициализируйте [хранилище секрета .NET Development](https://docs.microsoft.com/aspnet/core/security/app-secrets) , открыв его в каталоге, содержащем **графтуториал. csproj** , и выполнив следующую команду.
 
-```json
-{
-  "appId": "YOUR_APP_ID_HERE",
-  "scopes": [
-    "User.Read",
-    "Calendars.Read"
-  ]
-}
+```Shell
+dotnet user-secrets init
 ```
 
-Замените `YOUR_APP_ID_HERE` идентификатором приложения, созданным на портале Azure.
+Затем добавьте идентификатор приложения и список требуемых областей в Секретное хранилище с помощью следующих команд. Замените `YOUR_APP_ID_HERE` идентификатором приложения, созданным на портале Azure.
 
-> [!IMPORTANT]
-> Если вы используете систему управления версиями (например, Git), то теперь будет полезно исключить файл **appSettings. JSON** из системы управления версиями, чтобы избежать случайной утечки идентификатора приложения.
+```Shell
+dotnet user-secrets set appId "YOUR_APP_ID_HERE"
+dotnet user-secrets set scopes "User.Read;Calendars.Read"
+```
 
 ## <a name="implement-sign-in"></a>Реализация входа
 
@@ -118,7 +114,6 @@
 
     ```csharp
     using Microsoft.Extensions.Configuration;
-    using System.IO;
     ```
 
 1. Добавьте к классу `Program` следующую функцию:
@@ -127,14 +122,12 @@
     static IConfigurationRoot LoadAppSettings()
     {
         var appConfig = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", false, true)
+            .AddUserSecrets<Program>()
             .Build();
 
         // Check for required settings
         if (string.IsNullOrEmpty(appConfig["appId"]) ||
-            // Make sure there's at least one value in the scopes array
-            string.IsNullOrEmpty(appConfig["scopes:0"]))
+            string.IsNullOrEmpty(appConfig["scopes"]))
         {
             return null;
         }
@@ -155,7 +148,8 @@
     }
 
     var appId = appConfig["appId"];
-    var scopes = appConfig.GetSection("scopes").Get<string[]>();
+    var scopesString = appConfig["scopes"];
+    var scopes = scopesString.Split(';');
 
     // Initialize the auth provider with values from appsettings.json
     var authProvider = new DeviceCodeAuthProvider(appId, scopes);
