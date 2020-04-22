@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Начните с создания нового проекта консоли .NET Core с помощью [инфраструктуры .NET Core](/dotnet/core/tools/?tabs=netcore2x).
+Начните с создания нового проекта консоли .NET Core с помощью [инфраструктуры .NET Core](/dotnet/core/tools/).
 
 1. Откройте интерфейс командной строки (CLI) в каталоге, в котором нужно создать проект. Выполните следующую команду.
 
@@ -27,9 +27,9 @@
 Выполните следующие команды в интерфейсе командной строки, чтобы установить зависимости.
 
 ```Shell
-dotnet add package Microsoft.Extensions.Configuration.UserSecrets --version 3.1.0
-dotnet add package Microsoft.Identity.Client --version 4.7.1
-dotnet add package Microsoft.Graph --version 1.21.0
+dotnet add package Microsoft.Extensions.Configuration.UserSecrets --version 3.1.2
+dotnet add package Microsoft.Identity.Client --version 4.10.0
+dotnet add package Microsoft.Graph --version 3.0.1
 ```
 
 ## <a name="design-the-app"></a>Проектирование приложения
@@ -38,6 +38,56 @@ dotnet add package Microsoft.Graph --version 1.21.0
 
 Откройте **Program.CS** в текстовом редакторе (например, [Visual Studio Code](https://code.visualstudio.com/)) и замените все содержимое приведенным ниже кодом.
 
-[!code-csharp[](../demos/01-create-app/GraphTutorial/Program.cs)]
+```csharp
+using Microsoft.Extensions.Configuration;
+using System;
+
+namespace GraphTutorial
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(".NET Core Graph Tutorial\n");
+
+            int choice = -1;
+
+            while (choice != 0) {
+                Console.WriteLine("Please choose one of the following options:");
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("1. Display access token");
+                Console.WriteLine("2. List calendar events");
+
+                try
+                {
+                    choice = int.Parse(Console.ReadLine());
+                }
+                catch (System.FormatException)
+                {
+                    // Set to invalid value
+                    choice = -1;
+                }
+
+                switch(choice)
+                {
+                    case 0:
+                        // Exit the program
+                        Console.WriteLine("Goodbye...");
+                        break;
+                    case 1:
+                        // Display access token
+                        break;
+                    case 2:
+                        // List the calendar
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice! Please try again.");
+                        break;
+                }
+            }
+        }
+    }
+}
+```
 
 В результате будет реализовано базовое меню, в котором считывается выбор пользователя из командной строки.
