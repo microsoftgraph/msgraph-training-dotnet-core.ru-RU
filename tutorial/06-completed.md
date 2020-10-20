@@ -1,7 +1,0 @@
-<!-- markdownlint-disable MD002 MD041 -->
-
-<span data-ttu-id="a5501-101">Вы выполнили руководство по работе с .NET Core Microsoft Graph.</span><span class="sxs-lookup"><span data-stu-id="a5501-101">You've completed the .NET Core Microsoft Graph tutorial.</span></span> <span data-ttu-id="a5501-102">Теперь, когда у вас есть рабочее приложение, вызывающее Microsoft Graph, вы можете поэкспериментировать и добавить новые функции.</span><span class="sxs-lookup"><span data-stu-id="a5501-102">Now that you have a working app that calls Microsoft Graph, you can experiment and add new features.</span></span> <span data-ttu-id="a5501-103">Посетите страницу [Обзор Microsoft Graph](/graph/overview) , чтобы просмотреть все данные, к которым можно получить доступ с помощью Microsoft Graph.</span><span class="sxs-lookup"><span data-stu-id="a5501-103">Visit the [Overview of Microsoft Graph](/graph/overview) to see all of the data you can access with Microsoft Graph.</span></span>
-
-## <a name="feedback"></a><span data-ttu-id="a5501-104">Отзывы</span><span class="sxs-lookup"><span data-stu-id="a5501-104">Feedback</span></span>
-
-<span data-ttu-id="a5501-105">Сообщите о нем в [репозиторий GitHub](https://github.com/microsoftgraph/msgraph-training-dotnet-core).</span><span class="sxs-lookup"><span data-stu-id="a5501-105">Please provide any feedback on this tutorial in the [GitHub repository](https://github.com/microsoftgraph/msgraph-training-dotnet-core).</span></span>
