@@ -14,33 +14,36 @@
     dotnet run
     ```
 
-    Если это сработает, приложение должно выводить `Hello World!`результаты.
+    Если это сработает, приложение должно выводить результаты `Hello World!` .
 
 ## <a name="install-dependencies"></a>Установка зависимостей
 
 Перед перемещением добавьте дополнительные зависимости, которые будут использоваться позже.
 
-- [Microsoft. Extensions. Configuration. усерсекретс](https://github.com/aspnet/extensions) для чтения конфигурации приложения из [хранилища секретов для разработки .NET](https://docs.microsoft.com/aspnet/core/security/app-secrets).
+- [Microsoft.Extensions.Configуратион. Усерсекретс](https://github.com/aspnet/extensions) чтение конфигурации приложения из [хранилища секретов для разработки .NET](https://docs.microsoft.com/aspnet/core/security/app-secrets).
 - [Библиотека проверки подлинности Microsoft (MSAL) для .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) для проверки подлинности пользователя и получения маркеров доступа.
 - [Клиентская библиотека Microsoft Graph .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) , чтобы совершать вызовы в Microsoft Graph.
+- [Тимезонеконвертер](https://github.com/mj1856/TimeZoneConverter) для преобразования идентификаторов часовых поясов Windows в идентификаторы IANA.
 
 Выполните следующие команды в интерфейсе командной строки, чтобы установить зависимости.
 
 ```Shell
-dotnet add package Microsoft.Extensions.Configuration.UserSecrets --version 3.1.2
-dotnet add package Microsoft.Identity.Client --version 4.10.0
-dotnet add package Microsoft.Graph --version 3.0.1
+dotnet add package Microsoft.Extensions.Configuration.UserSecrets --version 3.1.8
+dotnet add package Microsoft.Identity.Client --version 4.19.0
+dotnet add package Microsoft.Graph --version 3.15.0
+dotnet add package TimeZoneConverter
 ```
 
 ## <a name="design-the-app"></a>Проектирование приложения
 
 В этом разделе вы создадите простое меню на основе консоли.
 
-Откройте **Program.CS** в текстовом редакторе (например, [Visual Studio Code](https://code.visualstudio.com/)) и замените все содержимое приведенным ниже кодом.
+Откройте **./Program.CS** в текстовом редакторе (например, [Visual Studio Code](https://code.visualstudio.com/)) и замените все содержимое приведенным ниже кодом.
 
 ```csharp
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace GraphTutorial
 {
@@ -56,7 +59,8 @@ namespace GraphTutorial
                 Console.WriteLine("Please choose one of the following options:");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("1. Display access token");
-                Console.WriteLine("2. List calendar events");
+                Console.WriteLine("2. View this week's calendar");
+                Console.WriteLine("3. Add an event");
 
                 try
                 {
@@ -79,6 +83,9 @@ namespace GraphTutorial
                         break;
                     case 2:
                         // List the calendar
+                        break;
+                    case 3:
+                        // Create a new event
                         break;
                     default:
                         Console.WriteLine("Invalid choice! Please try again.");

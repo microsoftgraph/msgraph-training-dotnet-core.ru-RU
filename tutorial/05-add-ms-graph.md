@@ -28,7 +28,13 @@
                 try
                 {
                     // GET /me
-                    return await graphClient.Me.Request().GetAsync();
+                    return await graphClient.Me
+                        .Request()
+                        .Select(u => new{
+                            u.DisplayName,
+                            u.MailboxSettings
+                        })
+                        .GetAsync();
                 }
                 catch (ServiceException ex)
                 {
@@ -40,13 +46,13 @@
     }
     ```
 
-1. Добавьте следующий код в `Main` **Program.CS** сразу после `GetAccessToken` вызова, чтобы получить пользователя и вывести отображаемое имя пользователя.
+1. Добавьте следующий код в файл `Main` **./Program.CS** сразу после вызова, `GetAccessToken` чтобы получить пользователя и вывести отображаемое имя пользователя.
 
     :::code language="csharp" source="../demo/GraphTutorial/Program.cs" id="GetUserSnippet":::
 
 Если вы запустите приложение сейчас, после входа в приложение введите имя.
 
-## <a name="get-calendar-events-from-outlook"></a>Получение событий календаря из Outlook
+## <a name="get-a-calendar-view"></a>Получение представления календаря
 
 1. Добавьте указанную ниже функцию в `GraphHelper` класс, чтобы получить события из календаря пользователя.
 
@@ -54,9 +60,12 @@
 
 Рассмотрите, что делает этот код.
 
-- URL-адрес, который будет вызываться — это `/me/events`.
-- `Select` Функция ограничит поля, возвращаемые для каждого события, только теми, которые приложение будет использовать в действительности.
-- `OrderBy` Функция сортирует результаты по дате и времени создания, начиная с самого последнего элемента.
+- URL-адрес, который будет вызываться — это `/me/calendarview` .
+- `startDateTime`Параметры и `endDateTime` задают начало и конец представления календаря.
+- `Prefer: outlook.timezone`Заголовок приводит к `start` `end` возвращению и записи событий в часовом поясе пользователя.
+- `Top`Функция запрашивает не более 50 событий.
+- `Select`Функция ограничит поля, возвращаемые для каждого события, только теми, которые приложение будет использовать в действительности.
+- `OrderBy`Функция сортирует результаты по дате и времени начала.
 
 ## <a name="display-the-results"></a>Отображение результатов
 
@@ -71,38 +80,43 @@
 1. Добавьте следующий код сразу после `// List the calendar` комментария в `Main` функции.
 
     ```csharp
-    ListCalendarEvents();
+    ListCalendarEvents(
+        user.MailboxSettings.TimeZone,
+        $"{user.MailboxSettings.DateFormat} {user.MailboxSettings.TimeFormat}"
+    );
     ```
 
-1. Сохраните все изменения и запустите приложение. Выберите параметр **список событий календаря** , чтобы просмотреть список событий пользователя.
+1. Сохраните все изменения и запустите приложение. Выберите параметр **Просмотреть календарь этой недели** , чтобы просмотреть список событий пользователя.
 
     ```Shell
-    Welcome Adele Vance
+    Welcome Lynne Robbins!
 
     Please choose one of the following options:
     0. Exit
     1. Display access token
-    2. List calendar events
+    2. View this week's calendar
+    3. Add an event
     2
     Events:
-    Subject: Team meeting
-      Organizer: Adele Vance
-      Start: 5/22/19, 3:00 PM
-      End: 5/22/19, 4:00 PM
-    Subject: Team Lunch
-      Organizer: Adele Vance
-      Start: 5/24/19, 6:30 PM
-      End: 5/24/19, 8:00 PM
-    Subject: Flight to Redmond
-      Organizer: Adele Vance
-      Start: 5/26/19, 4:30 PM
-      End: 5/26/19, 7:00 PM
-    Subject: Let's meet to discuss strategy
-      Organizer: Patti Fernandez
-      Start: 5/27/19, 10:00 PM
-      End: 5/27/19, 10:30 PM
-    Subject: All-hands meeting
-      Organizer: Adele Vance
-      Start: 5/28/19, 3:30 PM
-      End: 5/28/19, 5:00 PM
+    Subject: Meeting
+      Organizer: Lynne Robbins
+      Start: 9/28/2020 10:00 AM
+      End: 9/28/2020 11:30 AM
+    Subject: Weekly meeting
+      Organizer: Lynne Robbins
+      Start: 9/28/2020 2:00 PM
+      End: 9/28/2020 3:00 PM
+    Subject: Carpool
+      Organizer: Lynne Robbins
+      Start: 9/28/2020 4:00 PM
+      End: 9/28/2020 5:30 PM
+    Subject: Tailspin Toys Proposal Review + Lunch
+      Organizer: Lidia Holloway
+      Start: 9/29/2020 12:00 PM
+      End: 9/29/2020 1:00 PM
+    Subject: Weekly meeting
+      Organizer: Lynne Robbins
+      Start: 9/29/2020 2:00 PM
+      End: 9/29/2020 3:00 PM
+    Subject: Project Tailspin
     ```
